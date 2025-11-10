@@ -38,21 +38,17 @@ class section:
         self.ycge = (self.Y1points+self.Y2points)/2 
 
         self.w_len_total = np.sum(np.sqrt((self.X2points-self.X1points)**2 + (self.Y2points-self.Y1points)**2))
-        # for i in range(self.nw):    
-        #     self.length[i] = np.sqrt((self.X2points[i]-self.X1points[i])**2 + (self.Y2points[i]-self.Y1points[i])**2)
-        #     w_len_total += self.length[i]
+
 
         if(self.w_len_total != 0):
-            for i in range(self.nw):
-                self.xcgw += (self.xcge[i]*self.length[i]/self.w_len_total).item()
-                self.ycgw += (self.ycge[i]*self.length[i]/self.w_len_total).item()
-                
+            self.xcgw  = np.sum(self.xcge*self.length/self.w_len_total)
+            self.ycgw  = np.sum(self.ycge*self.length/self.w_len_total)
 
-        if (self.b_area_total != 0):    
-            for i in range(self.nb):
-                self.xcgb += self.xboom[i] * self.B[i]/ self.b_area_total
-                self.ycgb += self.yboom[i] * self.B[i]/ self.b_area_total
-        
+
+        if (self.b_area_total != 0):
+            self.xcgb = np.sum(self.xboom * self.B/ self.b_area_total)
+            self.ycgb = np.sum(self.yboom * self.B/ self.b_area_total)
+
         self.xcg = self.xcgb + self.xcgw
         self.ycg = self.ycgb + self.ycgw
         
@@ -67,16 +63,17 @@ class section:
 
 
             if(self.w_len_total != 0):      
-                for i in range(self.nw):
-                    theta[i] = math.atan2(self.Y2points[i]-self.Y1points[i],self.X2points[i]-self.X1points[i])
-                    ixe = iy_axis * math.sin(theta[i])**2
-                    iye = iy_axis * math.cos(theta[i])**2
-                    ixye = iy_axis/2 * math.sin(2*theta[i])
-                    
-                    self.ixw += (ixe[i] + self.length[i]*(self.ycge[i]-self.ycg)**2).item()
-                    self.iyw += (iye[i] + self.length[i]*(self.xcge[i]-self.xcg)**2).item()
-                    self.ixyw += (ixye[i] + self.length[i]*(self.ycge[i]-self.ycg)*(self.xcge[i]-self.xcg)).item()
+                
+                    theta = math.atan2(self.Y2points-self.Y1points,self.X2points-self.X1points)
+                    ixe = iy_axis * math.sin(theta)**2
+                    iye = iy_axis * math.cos(theta)**2
+                    ixye = iy_axis/2 * math.sin(2*theta)
+        
+                    self.ixw = np.sum(ixe + self.length*(self.ycge-self.ycg)**2)
+                    self.iyw = np.sum(iye + self.length*(self.xcge-self.xcg)**2)
+                    self.ixyw = np.sum(ixye + self.length*(self.ycge-self.ycg)*(self.xcge-self.xcg))
              
+
             if (self.b_area_total != 0):    
                 self.ixb = np.sum(self.B * (self.yboom - self.ycg)**2)
                 self.iyb = np.sum(self.B * (self.xboom- self.xcg)**2)
@@ -97,6 +94,7 @@ class section:
     def get_principal_axes(self):
         
             self.p_axes_scale = 0.1
+            
             if (self.w_len_total != 0 ):
                 self.p_axes_minx = np.minimum(np.min(self.X1points),np.min(self.X2points))
                 self.p_axes_maxx = np.maximum(np.max(self.X1points),np.max(self.X2points))
@@ -115,7 +113,7 @@ class section:
         
         is_open_end = False
        
-        self.open_end = self.points[0,0:2]
+        self.open_end = self.points[0,0:2] 
         while not is_open_end:
             for i in range(self.points.shape[0]):
                 for j in range(self.points.shape[0]):
@@ -268,7 +266,6 @@ print(f"kx = {shape.kx:.4f}/(d^3 t)")
 print(f"ky = {shape.ky:.4f}/(d^3 t)")
 print(f"kxy = {shape.kxy:.4f}/(d^3 t)")
 print(f"beta = {math.degrees(shape.beta):.4f}°")
-print(f"beta = {shape.b_area_total:.4f}°")
 print()
 plt.show()
 

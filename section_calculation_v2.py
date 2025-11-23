@@ -25,6 +25,7 @@ class node:
 class wall:
     
     all_walls = {}
+
     
     def __init__(self,node1,node2,t):
         # Nodes
@@ -63,16 +64,81 @@ class wall:
 
         
 class boom():
+    
+    all_booms = {}
+    
     def __init__(self,boom_node,A):
         self.node = boom_node
+        boom.all_booms[node] = self
         self.A = A
+        self.x = node.x
+        self.y = node.y
+        
         section.get_cg()
         section.get_i()
         
+        
 class section():
-    def get_cg():
-        pass
+    
+    def get_cg(self):
+        
+        area_w = 0
+        area_b = 0
+        xgw = 0
+        ygw = 0
+        xgb = 0
+        ygb = 0
+        
+        # Area first
+        
+        for wall_i in wall.all_walls.values():
+            area_w += wall_i.area
+            
+            
+        for boom_i in boom.all_booms.values():
+            section.area_b += boom_i.A
+            
+        section.total_area = area_w + area_b ### Total Area
+            
+        # Wall CG
+        
+        for wall_i in wall.all_walls.values():
+            xgw += wall_i.xcge*wall_i.area/section.total_area
+            ygw += wall_i.ycge*wall_i.area/section.total_area
+        
+        # Boom CG
+        for boom_i in boom.all_booms.values():
+            xgb += boom_i.x * boom_i.A/section.total_area
+            ygb += boom_i.y * boom_i.A/section.total_area
+        
+        section.xg = xgb + xgw ## Xcg
+        section.yg = ygb + ygw ## Ycg
+            
+        return section.xg,section.yg
         
     def get_i():
-        pass
         
+        ixw = 0
+        iyw = 0
+        ixyw = 0
+        ixb = 0
+        iyb = 0
+        ixyb = 0
+        
+        for wall_i in wall.all_walls.values():
+            ixw += wall_i.ixe + wall_i.area*(wall_i.ycge-section.yg)**2
+            iyw += wall_i.iye + wall_i.area*(wall_i.xcge-section.xg)**2
+            ixyw += wall_i.ixye + wall_i.area*(wall_i.ycge-section.yg)*(wall_i.xcge-section.xg)
+        
+        for boom_i in boom.all_booms.values():
+            ixb += boom_i.A*(boom_i.y-section.yg)**2
+            iyb += boom_i.A*(boom_i.x-section.xg)**2
+            ixyb += boom_i.A*(boom_i.y-section.yg)*(boom_i.x-section.xg)
+            
+        section.ix = ixw + ixb
+        section.iy = iyw + iyb
+        section.ixy = ixyw + ixyb
+        
+        return section.ix,section.iy,section.ixy
+
+    

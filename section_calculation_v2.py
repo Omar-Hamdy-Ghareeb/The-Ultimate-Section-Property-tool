@@ -12,26 +12,29 @@ class node:
         
         self.id = node.n_id
         node.n_id +=1
-        self.id_dict = {}
-        
+        self.adj_dict = {}
+        self.rank = 0
         self.x = x
         self.y = y
         
         node.all_nodes[self.id] = self
         
     def __repr__(self):
-        return f"{self.id},{self.x},{self.y}"
+        return f"{self.id}:{self.x},{self.y}"
 
 class wall:
+    
+    wall_id = 0
     
     all_walls = {}
 
     
     def __init__(self,node1,node2,t):
         # Nodes
+        self.id = wall.wall_id
         self.node1 = node1
         self.node2 = node2
-        wall.all_walls[(self.node1,self.node2)] = self
+        wall.all_walls[self.id] = self
         
         self.x1 = node1.x
         self.y1 = node1.y
@@ -58,11 +61,13 @@ class wall:
         
     
     def adjacent(self):
-        self.node1.id_dict[self.node2.id] = self
-        self.node2.id_dict[self.node1.id] = self
+        self.node1.adj_dict[self.node2.id] = self
+        self.node2.adj_dict[self.node1.id] = self
+        self.node1.rank = len(self.node1.adj_dict)
+        self.node2.rank = len(self.node2.adj_dict)
+   
         
-
-        
+     
 class boom():
     
     all_booms = {}
@@ -80,7 +85,7 @@ class boom():
         
 class section():
     
-    def get_cg(self):
+    def get_cg():
         
         area_w = 0
         area_b = 0

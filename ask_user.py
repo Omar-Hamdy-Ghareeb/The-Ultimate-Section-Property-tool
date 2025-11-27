@@ -1,4 +1,7 @@
-from section_calculation_v2 import node, wall, boom
+from section_calculation_v2 import node, wall, boom, section
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 def ask_user():
     n = int(input("Enter number of nodes "))
@@ -10,7 +13,7 @@ def ask_user():
         nodes[i].y = float(input(f"Enter y{i}: "))
         
     nw = int(input("\nEnter number of walls "))
-    walls = []
+    walls_arr = []
     print()
     
     for i in range(nw):
@@ -20,9 +23,13 @@ def ask_user():
         id_1 = int(input(f"\nChoose first node for wall no.{i+1}: "))
         id_2 = int(input(f"\nChoose second node for wall no.{i+1}: "))
         t = float(input(f"\nChoose thickness for wall no.{i+1}: "))
-        walls.append(wall(node.all_nodes[id_1],node.all_nodes[id_2],t))
+        walls_arr.append(wall(node.all_nodes[id_1],node.all_nodes[id_2],t))
         print()
+    walls = wall.all_walls
         
-    return walls, nodes
+    return walls, nodes, section.xg, section.yg, section.ix, section.iy, section.ixy
 
-walls, nodes = ask_user()
+walls, nodes, xg, yg, ix, iy, ixy = ask_user()
+
+
+

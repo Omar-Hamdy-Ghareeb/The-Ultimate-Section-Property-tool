@@ -149,63 +149,63 @@ boom = np.zeros((1,3))
 shape = np.zeros((1,4))
 
 # ------------------------------------Uncomment if testing a section-----------------------------------------
-# while(True):
-#     is_boom  = input("Does the section contain booms? [Y], [N] ").lower()
+while(True):
+    is_boom  = input("Does the section contain booms? [Y], [N] ").lower()
     
-#     if(is_boom == 'y'):
-#         n_b = int(input("Enter Number of booms: "))
-#         print()
-#         boom = np.zeros((n_b,3))
+    if(is_boom == 'y'):
+        n_b = int(input("Enter Number of booms: "))
+        print()
+        boom = np.zeros((n_b,3))
 
-#         for i in range(n_b):
-#              print(f"################# Boom {i+1} #################")
-#              print()
-#              boom[i,0] = float(input("x: "))
-#              boom[i,1] = float(input("y: "))
-#              boom[i,2] = float(input("A: "))
-#              print("------------------------------------------------------------")
-#              print()
-#         break
-#     elif(is_boom == 'n'):
-#         break
+        for i in range(n_b):
+             print(f"################# Boom {i+1} #################")
+             print()
+             boom[i,0] = float(input("x: "))
+             boom[i,1] = float(input("y: "))
+             boom[i,2] = float(input("A: "))
+             print("------------------------------------------------------------")
+             print()
+        break
+    elif(is_boom == 'n'):
+        break
     
-# while(True):
-#     is_web  = input("Does the section contain webs? [Y], [N] ").lower()
-#     if(is_web == 'y'):
-#         while(True):
-#             is_t_const = input("Is the cross section constant (It doesn't work for now')? [Y], [N] ").lower()
-#             if(is_t_const == 'y'):
-#                 t_const = True
-#                 break
-#             elif(is_t_const == 'n'):
-#                 t_const = False
-#                 break
+while(True):
+    is_web  = input("Does the section contain webs? [Y], [N] ").lower()
+    if(is_web == 'y'):
+        while(True):
+            is_t_const = input("Is the cross section constant (It doesn't work for now')? [Y], [N] ").lower()
+            if(is_t_const == 'y'):
+                t_const = True
+                break
+            elif(is_t_const == 'n'):
+                t_const = False
+                break
         
-#         nw = int(input("Enter Number of webs: "))
-#         print()
-#         shape = np.zeros((nw,4))
-#         if(t_const):
-#             thickness = np.ones(nw)
-#         else:
-#             thickness = np.zeros(nw)
+        nw = int(input("Enter Number of webs: "))
+        print()
+        shape = np.zeros((nw,4))
+        if(t_const):
+            thickness = np.ones(nw)
+        else:
+            thickness = np.zeros(nw)
 
-#         for i in range(nw):
-#              print(f"################# Web {i+1} #################")
-#              print()
-#              shape[i,0] = float(input("x1: "))
-#              shape[i,2] = float(input("y1: "))
-#              print()
-#              shape[i,1] = float(input("x2: "))
-#              shape[i,3] = float(input("y2: "))
-#              if (not t_const):
-#                  thickness[i] = input("t: ")
-#              print("------------------------------------------------------------")
-#              print()
+        for i in range(nw):
+             print(f"################# Web {i+1} #################")
+             print()
+             shape[i,0] = float(input("x1: "))
+             shape[i,2] = float(input("y1: "))
+             print()
+             shape[i,1] = float(input("x2: "))
+             shape[i,3] = float(input("y2: "))
+             if (not t_const):
+                 thickness[i] = input("t: ")
+             print("------------------------------------------------------------")
+             print()
              
-#         break
+        break
     
-#     elif(is_web == 'n'):
-#         break
+    elif(is_web == 'n'):
+        break
     
 # ----------------------------------------- END Of CLI ------------------------------------------------
        
